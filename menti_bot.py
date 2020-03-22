@@ -9,10 +9,13 @@ class MentiBot:
         self.driver = None
         self.options_list = []
         self.nr_of_options = 0
+        self.menti_code_url = ''
 
     def open_menti(self):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--incognito")
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-gpu")
         self.driver = webdriver.Chrome('C:/webdrivers/chromedriver', chrome_options=chrome_options)
         self.driver.get('https://menti.com')
         time.sleep(sleep_time)
@@ -23,6 +26,16 @@ class MentiBot:
         submit_code_btn = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/form/button')
         submit_code_btn.click()
         time.sleep(sleep_time)
+        setattr(self, 'menti_code_url', self.driver.current_url)
+
+    def reopen_menti(self):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--incognito")
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-gpu")
+        self.driver = webdriver.Chrome('C:/webdrivers/chromedriver', chrome_options=chrome_options)
+        self.driver.get(self.menti_code_url)
+        time.sleep(sleep_time)
 
     def vote(self, vote):
         xpath = '//*[@data-testid="choice-'
@@ -30,7 +43,7 @@ class MentiBot:
         option.click()
         submit_code_btn = self.driver.find_element_by_xpath('//*[@id="app"]/div/div[2]/div[1]/form/div/button')
         submit_code_btn.click()
-        time.sleep(sleep_time + 0.5)
+        time.sleep(sleep_time)
 
     def close_driver(self):
         self.driver.close()
