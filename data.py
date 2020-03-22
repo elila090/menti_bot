@@ -1,2 +1,2 @@
-menti_code = 783606       #458146
-total_votes = 5
+menti_code = 123456
+total_votes = 1
